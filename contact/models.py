@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
@@ -7,14 +8,16 @@ from django.utils import timezone
 # picture (image)
 # owner(foreign key)
 
-# class Category(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     name = models.CharField(max_length=255)
 
+class Category(models.Model):
+    class Meta:
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
 
-# class Owner(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     name = models.CharField(max_length=255)
+    name = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Contact(models.Model):
@@ -25,9 +28,18 @@ class Contact(models.Model):
     created_date = models.DateField(default=timezone.now)
     description = models.TextField(blank=True)
     show = models.BooleanField(default=True)
-    # id_category = models.ForeignKey(Category[id], on_delete=models.CASCADE)
-    # id_owner = models.ForeignKey(Owner.id, on_delete=models.CASCADE)
     picture = models.ImageField(blank=True, upload_to='pictures/%Y/%m/')
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    owner = models.ForeignKey(
+        User, on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'
