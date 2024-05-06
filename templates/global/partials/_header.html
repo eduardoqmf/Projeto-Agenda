@@ -26,6 +26,7 @@
                 class="search-input"
                 id="search"
                 name="q"
+                value="{% if request.GET.q %}{{ request.GET.q.strip }}{% endif %}"
             >
         </form>
     </div>
