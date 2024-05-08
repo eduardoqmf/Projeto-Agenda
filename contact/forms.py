@@ -10,11 +10,18 @@ class ContactForm(forms.ModelForm):
 
     class Meta:
         model = models.Contact
-        fields = '__all__'
+        fields = (
+            'first_name',
+            'last_name',
+            'phone',
+            'email',
+            'description',
+            'category',
+        )
         widgets = {
             'first_name': forms.TextInput(
                 attrs={
-                    'placeholder': 'Escreve aqui'
+                    'placeholder': 'First Name here'
                 }
             ),
         }
