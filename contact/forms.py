@@ -7,6 +7,13 @@ from . import models
 
 
 class ContactForm(forms.ModelForm):
+    picture = forms.ImageField(
+        widget=forms.FileInput(
+            attrs={
+                'accept': 'image/*'
+            }
+        )
+    )
 
     class Meta:
         model = models.Contact
@@ -17,14 +24,8 @@ class ContactForm(forms.ModelForm):
             'email',
             'description',
             'category',
+            'picture',
         )
-        widgets = {
-            'first_name': forms.TextInput(
-                attrs={
-                    'placeholder': 'First Name here'
-                }
-            ),
-        }
 
     def clean(self) -> dict[str, Any]:
         cleaned_data = super().clean()
