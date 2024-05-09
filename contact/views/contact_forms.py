@@ -18,8 +18,10 @@ def create(request):
         }
 
         if form.is_valid():
-            form.save()
-            return redirect('contact:update', contact_id=form.instance.pk)
+            contact = form.save()
+            contact.owner = request.user
+            contact.save()
+            return redirect('contact:update', contact_id=contact.pk)
 
         return render(
             request,
@@ -40,7 +42,12 @@ def create(request):
 
 @login_required(login_url='contact:user_login')
 def update(request, contact_id):
-    contact = get_object_or_404(Contact, pk=contact_id, show=True)
+    contact = get_object_or_404(
+        Contact,
+        pk=contact_id,
+        show=True,
+        owner=request.user
+    )
     form_action = reverse('contact:update', args=(contact_id,))
 
     if request.method == 'POST':
@@ -73,7 +80,8 @@ def update(request, contact_id):
 
 @login_required(login_url='contact:user_login')
 def delete(request, contact_id):
-    contact = get_object_or_404(Contact, pk=contact_id, show=True)
+    contact = get_object_or_404(
+        Contact, pk=contact_id, show=True, owner=request.user)
     confirmation = request.POST.get('confirmation', 'no')
 
     if confirmation == 'yes':
