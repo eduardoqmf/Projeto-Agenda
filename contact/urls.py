@@ -16,4 +16,7 @@ urlpatterns = [
 
     # user (CRU)
     path('user/create/', views.register, name='register'),
+    path('user/login/', views.user_login, name='user_login'),
+    path('user/logout/', views.user_logout, name='user_logout'),
+    path('user/update/', views.user_update, name='user_update'),
 ]
